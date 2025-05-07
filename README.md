@@ -137,7 +137,7 @@ public:
 
 	// 属性
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	TMap<FGameplayAttribute, FScalableFloat> Attributes;
+	TMap<FGameplayAttribute, float> Attributes;
 };
 
 // 接收伤害数据
@@ -620,7 +620,7 @@ UAbilitySystemComponent* AMyPawn::GetAbilitySystemComponent() const
 ```c++
 // 初始化属性存档数据
 UFUNCTION(BlueprintCallable, Category = "Attribute")
-virtual void InitaAttributeSaveData(TMap<FGameplayAttribute, FScalableFloat> InSaveAttributes) {};
+virtual void InitaAttributeSaveData(TMap<FGameplayAttribute, float> InSaveAttributes);
 
 // 恢复属性至满值，复活时调用
 UFUNCTION(BlueprintCallable, Category = "Attribute")
@@ -628,7 +628,7 @@ virtual void RestoreFullAttribute() {};
 
 // 添加到属性的属性点，初始化调用
 UFUNCTION(BlueprintCallable, Category = "Points")
-virtual bool AddAttributePoints(const FGameplayAttribute& InAttribute, int32 NewValue) { return false; };
+virtual bool AddAttributePoints(const FGameplayAttribute& InAttribute, int32 NewValue);
 
 // 应用受到到伤害
 virtual void ApplyDamage(const FGameplayEffectModCallbackData& Data);
