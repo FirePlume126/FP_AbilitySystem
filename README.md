@@ -4,12 +4,13 @@
 * **插件未开源**
 
 ## 作者信息
-Copyright FirePlume, All Rights Reserved. Email: fireplume@126.com
- 
-作者网址：
-[Bilibili](https://space.bilibili.com/395084718)、
-[YouTube](https://www.youtube.com/@FirePlume126)、
-[GitHub](https://www.github.com/FirePlume126)
+
+Copyright FirePlume, All Rights Reserved.
+
+Email: fireplume@126.com<br>
+GitHub: [FirePlume126](https://www.github.com/FirePlume126)<br>
+Bilibili: [火羽FP](https://space.bilibili.com/395084718)<br>
+YouTube: [FirePlume126](https://www.youtube.com/@FirePlume126)
 
 **[返回目录](https://www.github.com/FirePlume126/FP_Readme#Directory)**
 
@@ -35,6 +36,7 @@ Copyright FirePlume, All Rights Reserved. Email: fireplume@126.com
 |FPAbilityBase|能力基类，能力添加到[能力模型](#fpabilitysystem-abilitymodel)统一管理|
 |FPAbilityComboBase|运行[能力组合](#fpabilitysystem-fpabilitycombo)的能力基类，继承此类只需要完成基础设置就可以使用[能力组合](#fpabilitysystem-fpabilitycombo)|
 |FPAbilityBTTask_RunAbility|运行[能力模型](#fpabilitysystem-abilitymodel)中能力的行为树任务，详见[AI激活能力](#fpabilitysystem-aiactivateability)|
+|FPAbilitySTTask_RunAbility|运行[能力模型](#fpabilitysystem-abilitymodel)中能力的状态树任务，详见[AI激活能力](#fpabilitysystem-aiactivateability)|
 |FPAttributeSetBase|属性集基类，继承此类创建自己的[属性集](#fpabilitysystem-attributeset)|
 
 ![FPAbilitySystem_Framework](https://github.com/FirePlume126/FP_AbilitySystem/blob/main/Images/FPAbilitySystem_Framework.png)
@@ -638,9 +640,7 @@ virtual UGameplayEffect* GetBountyGameplayEffect() const;
 ```
 
 <a name="fpabilitysystem-aiactivateability"></a>
-4、AI激活能力，激活普通技能只需要设置`AbilityTag`，能力结束时会结束AI任务，也可以通过设置`WaitTime`强制取消能力，`InputTags`只对继承`UFPAbilityComboBase`的能力有效
-
-![FPAbilitySystem_AIActivateAbility](https://github.com/FirePlume126/FP_AbilitySystem/blob/main/Images/FPAbilitySystem_AIActivateAbility.png)
+4、AI激活能力，激活普通技能只需要设置`AbilityTag`，能力结束时会结束AI任务，也可以通过设置`WaitTime`强制取消能力，`InputTags`只对继承`UFPAbilityComboBase`的能力有效，用来释放连招技能。
 
 ```c++
 // 能力标签
@@ -655,6 +655,12 @@ float WaitTime = 0.0f;
 UPROPERTY(EditAnywhere, meta = (Categories = "FPInput.Ability"), Category = "FPAbility")
 TArray<FGameplayTag> InputTags;
 ```
+
+AI激活能力的行为树任务：
+![FPAbilitySystem_AIActivateAbility_BTT](https://github.com/FirePlume126/FP_AbilitySystem/blob/main/Images/FPAbilitySystem_AIActivateAbility_BTT.png)
+
+AI激活能力的状态树任务：运行激活能力任务的节点必须开启`CustomTickRate`；上下文`Actor`除了支持添加`Actor`和`Pawn`，还支持添加`AIController`
+![FPAbilitySystem_AIActivateAbility_STT](https://github.com/FirePlume126/FP_AbilitySystem/blob/main/Images/FPAbilitySystem_AIActivateAbility_STT.png)
 
 <a name="fpabilitysystem-blueprintapi"></a>
 5、根据情况调用`UFPAbilityManagerComponent`的蓝图API，C++使用去掉`K2_`的函数，可以减少内存消耗
