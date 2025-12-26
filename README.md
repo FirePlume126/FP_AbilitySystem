@@ -104,8 +104,8 @@ public:
 ![FPAbilitySystem_AbilityManager](https://github.com/FirePlume126/FP_AbilitySystem/blob/main/Images/FPAbilitySystem_AbilityManager.png)
 
 3、服务器和客户端分别调用`UFPAbilityManagerComponent::ServerInitComp()`和`UFPAbilityManagerComponent::ClientInitComp()`初始化组件。<br>
-绑定UFPAbilityManagerComponent::ReceivedDamageDelegate可以播放受击的动画和声音，也可以显示伤害数字，<br>
-绑定UFPAbilityManagerComponent::DiedDelegate执行死亡逻辑，如果使用了[FPOnlineSystem](#fponlinesystem)插件，则调用UFPOnlineFunctionLibrary::PawnDied()重生
+绑定UFPAbilityManagerComponent::OnReceivedDamage可以播放受击的动画和声音，也可以显示伤害数字，<br>
+绑定UFPAbilityManagerComponent::OnDied执行死亡逻辑，如果使用了[FPOnlineSystem](#fponlinesystem)插件，则调用UFPOnlineFunctionLibrary::PawnDied()重生
 
 ```c++
 // 服务器初始化组件，建议在APawn::PossessedBy()中调用
@@ -121,11 +121,11 @@ void ClientInitComp(UFPAbilitySystemComponent* InAbilitySystemComp);
 
 // 接收伤害委托，源和目标的服务器和客户端都可接收到委托。攻击拥有"FPAbility.Damage.Type.NotHitReact"标签将不执行此委托，可以播放受击的动画和声音，也可以显示伤害数字
 UPROPERTY(BlueprintAssignable, Category = "FPAbility")
-FFPAbilityReceivedDamageDelegate ReceivedDamageDelegate;
+FFPAbilityReceivedDamageDelegate OnReceivedDamage;
 
 // 死亡委托，绑定委托后执行死亡动画或者布娃娃，如果使用FPOnlineSystem调用UFPOnlineFunctionLibrary::PawnDied()重生
 UPROPERTY(BlueprintAuthorityOnly, BlueprintAssignable, Category = "FPAbility")
-FFPAbilityDiedDelegate DiedDelegate;
+FFPAbilityDiedDelegate OnDied;
 ```
 
 ```c++
@@ -416,7 +416,7 @@ TMap<FGameplayAttribute, FScalableFloat> Costs;
 
 4、在**能力模型**添加能力伤害，调用函数`UFPAbilityBase::MakeDamageGameplayEffectSpecHandles()`返回的`TArray<FGameplayEffectSpecHandle>`，给目标应用伤害调用函数`UFPAbilityFunctionLibrary::ApplyDamage()`<br>
 **伤害类型标签**：标签为空时，为普通[伤害计算](#fpabilitysystem-damagecalculation)。插件提供了`百分比伤害`、`真实伤害`和`关闭命中反馈`，
-添加`关闭命中反馈`标签后将不执行`UFPAbilityManagerComponent::ReceivedDamageDelegate`，会停止播放受击动画、声音等<br>
+添加`关闭命中反馈`标签后将不执行`UFPAbilityManagerComponent::OnReceivedDamage`，会停止播放受击动画、声音等<br>
 **伤害给与目标的效果**：如着火、眩晕等
 
 ```c++
@@ -434,7 +434,7 @@ static TArray<FActiveGameplayEffectHandle> ApplyDamage(AActor* InAvatarActor, TA
 
 // 接收伤害委托，源和目标的服务器和客户端都可接收到委托。攻击拥有"FPAbility.Damage.Type.NotHitReact"标签将不执行此委托，可以播放被击反应的动画和声音，也用来显示伤害数字
 UPROPERTY(BlueprintAssignable, Category = "FPAbility")
-FFPAbilityReceivedDamageDelegate ReceivedDamageDelegate;
+FFPAbilityReceivedDamageDelegate OnReceivedDamage;
 ```
 
 ```c++
