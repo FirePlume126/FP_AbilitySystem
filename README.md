@@ -867,7 +867,8 @@ $MitigatedDamage = UnmitigatedDamage\times \dfrac{100}{100 + Armor}\times (1 -Re
 |FPAbilityTask_NetworkSyncPoint|网络同步点任务：为客户端和服务器提供通用同步点的任务|
 |FPAbilityComboTasksComponent|能力组合任务组件，用于发送网络复制的游戏事件(按键输入后切换动画节点)|
 |FPAbilityComboCollisionComponent|能力组合碰撞组件：为网格提供基本的[攻击碰撞检测](#fpabilitysystem-fpabilitycombo-attacktrace)机制|
-|FPAbilityComboAnimNotifyState|能力组合动画通知状态：在组合动画开始或结束时发送事件|
+|FPAbilityComboInterface|技能组合接口，建议添加给释放技能的角色，重写接口函数`GetCollisionComponent()`，用来管理`FPAbilityComboTasksComponent`和`FPAbilityComboCollisionComponent`组件|
+|FPAbilityComboAnimNotifyState|能力组合动画通知状态：通过`FPAbilityComboTasksComponent`在组合动画开始或结束时发送事件|
 |FPAbilityCollisionAnimNotifyState|能力碰撞动画通知状态，用来控制`FPAbilityComboCollisionComponent`的碰撞检测|
 |FPAbilityGameplayCueNotify_HitImpact|能力游戏提示通知_命中打击，用于生成打击目标的粒子和声音|
 |FPAbilityCombo|能力组合，将动画组合成连击动作|
